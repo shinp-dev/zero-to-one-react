@@ -18,7 +18,15 @@ export const Console: React.FC<ConsoleProps> = ({ logs, onClear }) => {
   React.useEffect(() => {
     // ログが追加されたら、コンソール領域だけを一番下までスクロール
     if (consoleContainerRef.current) {
-      consoleContainerRef.current.scrollTop = consoleContainerRef.current.scrollHeight;
+      // DOMの更新完了を確実に待つために setTimeout を使用
+      setTimeout(() => {
+        if (consoleContainerRef.current) {
+          consoleContainerRef.current.scrollTo({
+            top: consoleContainerRef.current.scrollHeight,
+            behavior: 'smooth'
+          });
+        }
+      }, 10);
     }
   }, [logs]);
 
