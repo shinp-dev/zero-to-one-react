@@ -669,7 +669,7 @@ JSXの \`{}\` の中にはJavaScriptの**式（値を返すもの）**しか書�
   },
   {
     id: 'list-rendering',
-    title: '10. リスト表示と key',
+    title: '11. リスト表示と key',
     category: 'react-basic',
     description: `第7章で学んだ \`map\` メソッドが、ここでReactの中で大活躍します！
 データの配列を**JSX要素の配列に変換**して、リストを画面に表示するのがReactの基本パターンです。
@@ -762,7 +762,7 @@ Reactがリストの各要素を**一意に識別する**ための特別な属�
   },
   {
     id: 'components-props',
-    title: '11. コンポーネントとProps',
+    title: '12. コンポーネントとProps',
     category: 'react-basic',
     description: `Reactの真の強みは、UIを「**コンポーネント**（独立した部品）」に分解して、何度も再利用できる点にあります。
 そして、それぞれの部品に異なるデータを渡して表示を変える仕組みが **\`Props (プロップス)\`** です。
@@ -854,7 +854,7 @@ function App() {
   },
   {
     id: 'component-extraction',
-    title: '12. コンポーネントの抽出',
+    title: '13. コンポーネントの抽出',
     category: 'react-basic',
     description: `前章ではすでに用意されたコンポーネントを「呼び出す」だけでしたが、本当に大切なのは**「自分で作る」**力です。
 
@@ -958,7 +958,7 @@ function App() {
   },
   {
     id: 'callback-props',
-    title: '13. コールバック Props（子→親の通信）',
+    title: '14. コールバック Props（子→親の通信）',
     category: 'react-basic',
     description: `これまでは「親→子」へデータを渡す方法（Props）を学びました。しかし実際のアプリでは、**「子で起きたイベントを親に伝える」**必要も頻繁にあります。
 
@@ -1493,7 +1493,299 @@ React.useEffect(() => {
         return { success: false, message: '時間経過のために `setInterval` を記述してください。' };
       }
       if (!hasClear) {
-        return { success: false, message: 'クリーンアップ処理として `clearInterval` を呼び出してください。' };
+        return { success: false, message: '`clearInterval` をクリーンアップ時に呼び出してください。' };
+      }
+      return { success: true };
+    }
+  },
+  {
+    id: 'children-prop',
+    title: '18. children（マトリョーシカ構造）',
+    category: 'react-basic',
+    description: `Reactでは、コンポーネントの中に別のコンポーネントやHTMLタグを「挟み込む」ことができます。
+
+本物のマトリョーシカのように、コンポーネントを入れ子（ネスト）にして扱いたい時に使うのが、特別なPropsである **\`children\`** です。
+
+### 使い方：
+枠組みとなるコンポーネント（器）側で、\`props.children\`（または分割代入の \`children\`）を配置します。
+
+\`\`\`jsx
+function BorderBox({ children }) {
+  return (
+    <div style={{ border: "2px solid var(--primary)", padding: "12px" }}>
+      {children} {/* ここに、挟み込まれたコンテンツが入ります！ */}
+    </div>
+  );
+}
+\`\`\`
+
+これを使うと、別の場所で以下のように囲むだけで、中身を自由に入れ替えることができます！
+
+\`\`\`jsx
+function App() {
+  return (
+    <BorderBox>
+      <h3>こんにちは！</h3>
+      <p>このように好きなタグを中に挟み込めます。</p>
+    </BorderBox>
+  );
+}
+\`\`\`
+
+外枠の「器（BorderBox）」と、内側の「中身（h3 や p）」を完全に分けることができるため、カードレイアウト、モーダル、ダイアログなどの「共通の枠」をきれいに作る際に必須のパターンです。`,
+    task: `外枠となる \`Card\` コンポーネントを完成させてください。
+1. \`Card\` コンポーネントが、Propsとして受け取った **\`children\`** を \`<div style={{...}}>\` の中で正しくレンダリングできるようにしてください。
+2. その後、\`App\` コンポーネントの中で \`<Card>\` を使用し、好きな絵文字やタイトルを挟み込んでみてください。`,
+    initialCode: `// 課題: children を使って、中身を自由に挟み込めるマトリョーシカ・コンポーネントを作ってください。
+
+function Card({ children }) {
+  // TODO: ここを修正して、受け取った children を div の中でレンダリングしてください。
+  return (
+    <div style={{
+      background: "var(--bg-panel-light)",
+      border: "2px dashed var(--primary-light)",
+      borderRadius: "12px",
+      padding: "24px",
+      textAlign: "center"
+    }}>
+      {/* ここに children を入れてください */}
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      {/* TODO: Card で、絵文字やタイトルを挟み込んでマトリョーシカ構造にしてください。 */}
+      <Card>
+        <span style={{ fontSize: "40px" }}>🔥</span>
+        <h3 style={{ margin: "12px 0 0" }}>マトリョーシカ成功！</h3>
+      </Card>
+    </div>
+  );
+}
+
+// レンダリングのためのエクスポート
+export default App;`,
+    solutionCode: `function Card({ children }) {
+  return (
+    <div style={{
+      background: "var(--bg-panel-light)",
+      border: "2px dashed var(--primary-light)",
+      borderRadius: "12px",
+      padding: "24px",
+      textAlign: "center"
+    }}>
+      {children}
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <Card>
+        <span style={{ fontSize: "40px" }}>🔥</span>
+        <h3 style={{ margin: "12px 0 0" }}>マトリョーシカ成功！</h3>
+      </Card>
+    </div>
+  );
+}
+
+export default App;`,
+    hints: [
+      'Cardコンポーネントの引数で `{ children }`（分割代入）として受け取ります。',
+      'Cardコンポーネントを呼び出す際、`<Card> 中身 </Card>` のようにダブルタグで囲むことで、挟まれた部分が `children` として渡されます。'
+    ],
+    validate: (code, _logs, previewEl) => {
+      const hasChildrenParam = code.includes('children');
+      const hasChildrenInJSX = /\{children\}/.test(code) || /props\.children/.test(code);
+      const isRendered = previewEl && previewEl.textContent?.includes('マトリョーシカ成功！');
+
+      if (!hasChildrenParam) {
+        return { success: false, message: '`Card` の引数で `children` を受け取ってください。' };
+      }
+      if (!hasChildrenInJSX) {
+        return { success: false, message: '`Card` のJSXの中で `{children}` をレンダリングしてください。' };
+      }
+      if (!isRendered) {
+        return { success: false, message: '`Card` を使って、絵文字やタイトルをタグで挟み込んでレンダリングしてください。' };
+      }
+      return { success: true };
+    }
+  },
+  {
+    id: 'use-context',
+    title: '19. useContext（データのワープ）',
+    category: 'react-basic',
+    description: `コンポーネントの階層が深く（親 ➔ 子 ➔ 孫...）なっていくと、最深部のコンポーネントにデータを渡すために、関係ない中間のコンポーネントにもPropsを書き続ける必要が出てきます（これを **Props Drilling / バケツリレー** と呼びます）。
+
+これを一瞬できれいに解決するのが **Context API (useContext)** です。
+
+Contextを使うと、親コンポーネントから、どんなに深い場所にある孫コンポーネントへも、**中継コンポーネントを介さずに直接データを「ワープ」させる**ことができます！
+
+### 3つのステップ：
+1. **Context（トンネル）を作る**:
+   \`\`\`javascript
+   const MyContext = React.createContext(初期値);
+   \`\`\`
+2. **Provider（入り口）で囲み、現在値を流し込む**:
+   \`\`\`jsx
+   <MyContext.Provider value={value}>
+     {/* ここに含まれるすべてのコンポーネントが対象 */}
+   </MyContext.Provider>
+   \`\`\`
+3. **useContext（出口）でデータを吸い上げる**:
+   \`\`\`jsx
+   const value = React.useContext(MyContext);
+   \`\`\`
+
+これにより、中間のコンポーネントはPropsを一切受け取らずに、最深部のコンポーネントだけが欲しいデータをピンポイントで取得できるようになります。`,
+    task: `テーマ（\`theme\`）情報を深くネストされたボタンコンポーネントにワープさせましょう。
+1. 最深部にある \`ThemeButton\` の中で **\`React.useContext\`** を使い、アプリ全体に共有されている \`ThemeContext\` から現在のテーマを読み取ってください。
+2. 取得したテーマ情報を \`theme\` 定数に代入し、ボタンの表示やスタイルが現在のテーマ（'light' または 'dark'）と同期するようにしてください。`,
+    initialCode: `// 1. コンテキスト（トンネル）を作ります。初期値は 'light'
+const ThemeContext = React.createContext('light');
+
+function App() {
+  const [theme, setTheme] = React.useState('dark'); // テーマ状態
+
+  return (
+    // 2. Provider でアプリを囲み、現在値を流し込みます
+    <ThemeContext.Provider value={theme}>
+      <div style={{ textAlign: 'center', padding: '20px' }}>
+        <h3 style={{ margin: '0 0 12px' }}>テーマ切り替えコンテキスト</h3>
+        <button 
+          onClick={() => setTheme(prev => prev === 'light' ? 'dark' : 'light')}
+          style={{ 
+            marginBottom: '20px', 
+            padding: '8px 16px', 
+            cursor: 'pointer',
+            backgroundColor: 'var(--primary)',
+            color: 'white',
+            border: 'none',
+            borderRadius: '6px',
+            fontWeight: 'bold'
+          }}
+        >
+          テーマを切り替える (現在: {theme})
+        </button>
+        
+        <MiddleComponent />
+      </div>
+    </ThemeContext.Provider>
+  );
+}
+
+// 中間コンポーネント（Props は一切受け取りません！）
+function MiddleComponent() {
+  return (
+    <div style={{ border: '2px solid var(--border-color)', padding: '20px', borderRadius: '12px' }}>
+      <p style={{ color: 'var(--text-muted)', fontSize: '13px', margin: '0 0 16px' }}>
+        ※ 私はPropsを中継していません（バケツリレーなし）
+      </p>
+      <ThemeButton />
+    </div>
+  );
+}
+
+// 最深部コンポーネント（ここでContextからデータを吸い上げます）
+function ThemeButton() {
+  // TODO: React.useContext を使って ThemeContext から値を取得してください。
+  const theme = "light"; // ここを React.useContext(ThemeContext) に書き換えてください。
+
+  const isDark = theme === 'dark';
+
+  return (
+    <button style={{
+      background: isDark ? '#f3f4f6' : '#1f2937',
+      color: isDark ? '#1f2937' : '#f3f4f6',
+      border: 'none',
+      padding: '12px 24px',
+      borderRadius: '8px',
+      fontWeight: 'bold',
+      cursor: 'pointer',
+      transition: 'all 0.3s'
+    }}>
+      {isDark ? '🎨 ライトモードにする' : '🌙 ダークモードにする'}
+    </button>
+  );
+}
+
+export default App;`,
+    solutionCode: `const ThemeContext = React.createContext('light');
+
+function App() {
+  const [theme, setTheme] = React.useState('dark');
+
+  return (
+    <ThemeContext.Provider value={theme}>
+      <div style={{ textAlign: 'center', padding: '20px' }}>
+        <h3 style={{ margin: '0 0 12px' }}>テーマ切り替えコンテキスト</h3>
+        <button 
+          onClick={() => setTheme(prev => prev === 'light' ? 'dark' : 'light')}
+          style={{ 
+            marginBottom: '20px', 
+            padding: '8px 16px', 
+            cursor: 'pointer',
+            backgroundColor: 'var(--primary)',
+            color: 'white',
+            border: 'none',
+            borderRadius: '6px',
+            fontWeight: 'bold'
+          }}
+        >
+          テーマを切り替える (現在: {theme})
+        </button>
+        
+        <MiddleComponent />
+      </div>
+    </ThemeContext.Provider>
+  );
+}
+
+function MiddleComponent() {
+  return (
+    <div style={{ border: '2px solid var(--border-color)', padding: '20px', borderRadius: '12px' }}>
+      <p style={{ color: 'var(--text-muted)', fontSize: '13px', margin: '0 0 16px' }}>
+        ※ 私はPropsを中継していません（バケツリレーなし）
+      </p>
+      <ThemeButton />
+    </div>
+  );
+}
+
+function ThemeButton() {
+  const theme = React.useContext(ThemeContext);
+
+  const isDark = theme === 'dark';
+
+  return (
+    <button style={{
+      background: isDark ? '#f3f4f6' : '#1f2937',
+      color: isDark ? '#1f2937' : '#f3f4f6',
+      border: 'none',
+      padding: '12px 24px',
+      borderRadius: '8px',
+      fontWeight: 'bold',
+      cursor: 'pointer',
+      transition: 'all 0.3s'
+    }}>
+      {isDark ? '🎨 ライトモードにする' : '🌙 ダークモードにする'}
+    </button>
+  );
+}
+
+export default App;`,
+    hints: [
+      'ThemeButton の中で、`const theme = React.useContext(ThemeContext);` と記述します。',
+      'これで、どれだけネストが深くても親の `<ThemeContext.Provider value={theme}>` から渡された値を直接吸い上げることができます。'
+    ],
+    validate: (code, _logs, _previewEl) => {
+      const hasUseContext = code.includes('useContext(ThemeContext)') || code.includes('React.useContext(ThemeContext)');
+
+      if (!hasUseContext) {
+        return { success: false, message: '`React.useContext(ThemeContext)` を使って、テーマの値を取得してください。' };
       }
       return { success: true };
     }
