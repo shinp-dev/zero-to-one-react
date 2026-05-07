@@ -13,12 +13,12 @@ interface ConsoleProps {
 }
 
 export const Console: React.FC<ConsoleProps> = ({ logs, onClear }) => {
-  const consoleEndRef = React.useRef<HTMLDivElement>(null);
+  const consoleContainerRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
-    // ログが追加されたら自動で一番下までスクロール
-    if (consoleEndRef.current) {
-      consoleEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    // ログが追加されたら、コンソール領域だけを一番下までスクロール
+    if (consoleContainerRef.current) {
+      consoleContainerRef.current.scrollTop = consoleContainerRef.current.scrollHeight;
     }
   }, [logs]);
 
@@ -37,7 +37,7 @@ export const Console: React.FC<ConsoleProps> = ({ logs, onClear }) => {
           <Trash2 size={14} />
         </button>
       </div>
-      <div className="console-logs">
+      <div className="console-logs" ref={consoleContainerRef}>
         {logs.length === 0 ? (
           <div style={{ color: '#4b5563', fontStyle: 'italic', padding: '4px' }}>
             ログはありません。コードを実行してください。
@@ -50,7 +50,6 @@ export const Console: React.FC<ConsoleProps> = ({ logs, onClear }) => {
             </div>
           ))
         )}
-        <div ref={consoleEndRef} />
       </div>
     </div>
   );
