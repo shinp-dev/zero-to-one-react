@@ -114,7 +114,7 @@ function App() {
       </header>
 
       {/* メインのWeb IDEワークスペース */}
-      <main style={{ flex: 1, position: 'relative' }}>
+      <main style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '360px 1fr', height: '100%' }}>
           {/* 左カラム：レクチャー ＆ 課題 */}
           <Sidebar

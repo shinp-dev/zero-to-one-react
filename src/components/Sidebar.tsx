@@ -125,7 +125,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
       </div>
 
-      <div className="panel-content" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div className="panel-content">
         {/* レッスン選択のナビゲーション */}
         <div className="lesson-navigation">
           <button 
@@ -169,7 +169,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* 解説コンテンツ */}
-        <div className="lecture-container">
+        <div className="lecture-container" style={{ marginTop: '20px' }}>
           <div className="lecture-markdown">
             {renderContent(currentLesson.description)}
           </div>
