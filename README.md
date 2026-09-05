@@ -1,207 +1,106 @@
-# 🎓 React Learn & Play
+# Zero to One React
 
-> モダンJavaScriptに触れたことがない学生向けの、インタラクティブ学習プレイグラウンド。  
-> コード編集・ライブプレビュー・自動テスト判定がすべてブラウザ上で完結します。
+React未経験の学生が、**「Hooksの書き方を暗記する」のではなく、UI・Props・State・イベント・Effectの役割を判断できるようになる**ための日本語教材です。
 
-🌐 **オンライン公開URL**: [https://matsutanishimpei.github.io/zero-to-one-react/](https://matsutanishimpei.github.io/zero-to-one-react/)
+旧版のブラウザ内Playground / Monaco Editor / Babel実行環境 / 自動採点は廃止しました。学生は普通の **Vite + React + TypeScript** プロジェクトをVS Code等で編集し、ブラウザとDevToolsで動作を確認します。
 
----
+本教材は2026年9月時点のReact公式ドキュメントとVite 8系を基準にしています。
 
-## 🚀 クイックスタート
+## 対象
 
-### 必要な環境
+- HTML / CSSの基礎を知っている
+- JavaScriptの基本的な変数・関数・配列を知っている
+- Reactは未経験
 
-- **Node.js** v18 以上
-- **npm** v9 以上
+モダンJavaScriptやTypeScriptに不安がある場合は先に以下を確認してください。
 
-### 起動手順
+- [React前に必要なモダンJavaScript](prerequisites/modern-javascript.md)
+- [Reactで使う最小限のTypeScript](prerequisites/typescript-for-react.md)
+
+## 0. 練習プロジェクトを作る
+
+React公式は、Reactの基礎を学ぶ目的ならscratchからアプリを作る方法も案内しています。本教材では仕組みを見やすくするためViteを使います。
 
 ```bash
-# 1. 依存パッケージのインストール
+npm create vite@latest react-practice -- --template react-ts
+cd react-practice
 npm install
-
-# 2. 開発サーバーの起動
 npm run dev
 ```
 
-ターミナルに表示されるURL（デフォルト: `http://localhost:5173/`）にブラウザでアクセスすればすぐに学習を開始できます。
+Vite 8はNode.js 20.19+または22.12+を必要とします。授業環境では **Node.js 24 LTS推奨** とします。
 
----
+> Create React Appは使用しません。React公式でもdeprecatedです。
 
-## 📚 カリキュラム（全19クエスト）
+## 学習順序
 
-前半で **Reactを書くために必要なモダンJSの基礎** を固め、後半で **Reactの実践的なコンポーネント設計＆応用** をステップバイステップで学びます。
+| 章 | テーマ | ゴール |
+|---|---|---|
+| [00](curriculum/00_why_react.md) | Reactは何を解決する？ | DOM直接操作との違いを説明できる |
+| [01](curriculum/01_jsx.md) | JSX | データからUIを記述できる |
+| [02](curriculum/02_components.md) | Components | UIを部品へ分けられる |
+| [03](curriculum/03_props.md) | Props | 親から子へデータを渡せる |
+| [04](curriculum/04_conditional_list_key.md) | 条件・List・key | 配列から安定したUIを生成できる |
+| [05](curriculum/05_events.md) | Events | ユーザー操作に応答できる |
+| [06](curriculum/06_state.md) | State / useState | UIが覚える値を扱える |
+| [07](curriculum/07_state_snapshot.md) | Stateはsnapshot | 更新直後の値を誤解しない |
+| [08](curriculum/08_state_design.md) | State設計 | 必要最小限のstateを選べる |
+| [09](curriculum/09_sharing_state.md) | Sharing State | stateを適切な共通親へ移せる |
+| [10](curriculum/10_forms.md) | Forms | 入力値をstateと接続できる |
+| [11](curriculum/11_composition.md) | Composition / children | 部品を組み合わせて設計できる |
+| [12](curriculum/12_context.md) | Context | Propsとの使い分けを判断できる |
+| [13](curriculum/13_you_might_not_need_effect.md) | Effectはいらない？ | render / event / Effectを区別できる |
+| [14](curriculum/14_effect.md) | Effect | 外部システムと安全に同期できる |
+| [15](curriculum/15_final_workshop.md) | 総合演習 | 小さなReactアプリを設計できる |
 
-### JavaScript 基礎（第1章〜第8章）
+## この教材で一番大事な6つ
 
-| # | テーマ | 学ぶこと |
-| :---: | :--- | :--- |
-| 01 | const と let | 変数宣言の新ルール、再代入の有無による使い分け |
-| 02 | アロー関数 | `function` ➔ `=>` への書き換え、省略形 |
-| 03 | 分割代入 | `{ name, age } = obj` でオブジェクトから値を取り出す |
-| 04 | テンプレートリテラル | バッククォート \` \` と \`\${}\` で変数を文字列に埋め込む |
-| 05 | 三項演算子 | `条件 ? 真 : 偽` によるシンプルな条件分岐（ReactのJSXで大活躍） |
-| 06 | スプレッド構文 | `...` を用いた配列やオブジェクトのコピー・展開 |
-| 07 | 配列メソッド map | `.map()` で配列の全要素に同じ処理をして新しい配列を作る |
-| 08 | 配列メソッド filter | `.filter()` で条件に合う要素だけを抽出した新しい配列を作る |
-
-### React 実践 ＆ 応用（第9章〜第19章）
-
-| # | テーマ | 学ぶこと |
-| :---: | :--- | :--- |
-| 09 | はじめてのJSX | HTMLに似た構文でUIを表現する、`{}` での変数埋め込み |
-| 10 | 条件付きレンダリング | 三項演算子や `&&` を使った、条件による表示・非表示の切り替え |
-| 11 | リスト表示と key | 配列データを繰り返し描画する、`key` プロパティの超重要性 |
-| 12 | コンポーネントの基本 | UIを再利用可能な関数（コンポーネント）として切り出す |
-| 13 | Propsの基本 | 親から子コンポーネントへデータを引き渡す仕組み |
-| 14 | コンポーネントの抽出 | 複雑なJSXを切り出して別コンポーネントに設計し直す実践 |
-| 15 | コールバック Props | 子コンポーネントでのクリックイベント等を親に伝える逆流設計 |
-| 16 | State と useState | コンポーネントに「状態」を持たせて画面を動的に変える |
-| 17 | フォーム入力と制御コンポーネント | テキスト入力値とStateを同期させ、リアルタイム検索を作る |
-| 18 | useEffect | コンポーネント描画時の副作用（タイマー等）とクリーンアップ |
-| 19 | children（マトリョーシカ） | タグの間に要素を挟み込み、枠（器）と中身を分ける高度なコンポーネント設計 |
-| 20 | useContext（データのワープ） | バケツリレー（Props Drilling）を防ぎ、奥深くへデータをワープさせる |
-
----
-
-## 🖥️ 画面構成
-
-アプリは3ペインの **Web IDE** レイアウトです。
-
-```
-┌──────────────────────────────────────────────────────────┐
-│  ヘッダー（進捗バー）                                      │
-├──────────┬───────────────────┬───────────────────────────┤
-│          │                   │  ライブプレビュー           │
-│  解説 &  │   コードエディタ   │  （Reactコンポーネント描画） │
-│  課題    │  （Monaco Editor） ├───────────────────────────┤
-│          │                   │  仮想コンソール             │
-│  ヒント  │                   │  （console.log 出力表示）   │
-├──────────┴───────────────────┴───────────────────────────┤
-│  検証結果バナー（ミッションクリア / 未達成）                  │
-└──────────────────────────────────────────────────────────┘
+```text
+1. UIは props / state から計算される
+2. stateは必要最小限にする
+3. stateは「そのレンダー時点のsnapshot」
+4. 同じstateを共有したいなら共通の親へ持ち上げる
+5. ユーザー操作はevent handlerで扱う
+6. Effectは外部システムとの同期に使う
 ```
 
-### 操作方法
+Reactを覚えるというより、**どこに何を書くべきか判断する**ための教材です。
 
-1. **左パネル** で解説を読み、課題を確認する
-2. **中央エディタ** でコードを書く（Monaco Editor による補完・ハイライト付き）
-3. **「実行 ＆ テスト」ボタン** を押す
-4. 右パネルの **プレビュー** と **仮想コンソール** で動作を確認
-5. 自動テストに合格すると **「ミッションクリア！」** → 次のレッスンへ
+## 各章の進め方
 
-> **ヒント**: 詰まったときは左パネル下部の「ヒントを見る」アコーディオンを開いてください。
+1. 今日のゴールを読む
+2. `react-practice/src/App.tsx`を編集する
+3. ブラウザで見た目と挙動を確認する
+4. React DevTools / Browser DevToolsで状態やエラーを見る
+5. 「なぜこのstateはここにあるのか」を1文で説明する
+6. 必要なら[examples](examples/README.md)と比較する
 
----
+## AIを使うときのルール
 
-## 🔧 技術スタック
+AIによるコード生成は禁止しません。ただし、生成されたコードについて最低限次を説明できる状態にしてください。
 
-| 技術 | 用途 |
-| :--- | :--- |
-| [Vite](https://vite.dev/) + React + TypeScript | アプリ基盤 |
-| [Monaco Editor](https://microsoft.github.io/monaco-editor/) | ブラウザ内コードエディタ（VS Codeと同エンジン） |
-| [@babel/standalone](https://babeljs.io/docs/babel-standalone) | ブラウザ内でのJSX/ES6+リアルタイムトランスパイル |
-| [Lucide React](https://lucide.dev/) | UIアイコン |
-| LocalStorage | 学習進捗の保存・復元 |
+- どのコンポーネントがどのstateを所有しているか
+- その値は本当にstateである必要があるか
+- Propsはどちら向きに流れているか
+- その処理はrender / event / Effectのどこに置くべきか
+- Effectがある場合、同期している外部システムは何か
 
----
+AIが`useEffect`やstateを増やしたときは、**本当に必要かを疑う**のが基本です。
 
-## 📁 ソースコード構成
+## Examples
 
-```
-src/
-├── data/
-│   └── lessons.ts          # 全19章の解説・初期コード・模範解答・自動テスト判定
-├── components/
-│   ├── Sidebar.tsx          # 左パネル: 解説表示・ヒント・レッスン切替
-│   ├── Playground.tsx       # 中央+右パネル: エディタ・Babelコンパイル・プレビュー・判定
-│   └── Console.tsx          # 仮想コンソール (console.log キャプチャ)
-├── App.tsx                  # 全体レイアウト・進捗管理・修了演出
-├── index.css                # ダークテーマ デザインシステム
-└── main.tsx                 # エントリーポイント
-```
+[examples/README.md](examples/README.md) に重要概念の最小例を置いています。まず自分で実装してから比較してください。
 
-### レッスンの追加・編集
+## 公式資料
 
-`src/data/lessons.ts` を編集するだけで、新しいレッスンの追加やバリデーション条件の変更が可能です。
+- React Learn: https://react.dev/learn
+- React Installation: https://react.dev/learn/installation
+- Thinking in React: https://react.dev/learn/thinking-in-react
+- You Might Not Need an Effect: https://react.dev/learn/you-might-not-need-an-effect
+- Vite Getting Started: https://vite.dev/guide/
 
-各レッスンは以下の構造を持っています:
+監査基準は [reference/sources.md](reference/sources.md) にまとめています。
 
-```typescript
-{
-  id: 'unique-id',               // 一意なID
-  title: 'レッスンタイトル',       // 表示名
-  category: 'modern-js',         // 'modern-js' または 'react-basic'
-  description: '解説テキスト',     // Markdown形式の解説
-  task: '課題の説明',              // ミッション内容
-  initialCode: '初期コード',       // エディタに最初から入っているコード
-  solutionCode: '模範解答',        // （参考用）
-  hints: ['ヒント1', 'ヒント2'],  // アコーディオンで表示
-  validate: (code, logs, dom) => { // 自動テスト判定関数
-    // code: 学生が書いたコード文字列
-    // logs: console.log の出力配列
-    // dom:  プレビューのDOM要素（Reactレッスン用）
-    return { success: true };      // or { success: false, message: '...' }
-  }
-}
-```
+## License
 
----
-
-## 💡 指導者向けメモ
-
-### 学習進捗について
-
-- 進捗は **ブラウザの LocalStorage** に自動保存されます
-- ブラウザを閉じても、同じブラウザで再アクセスすれば前回の続きから再開可能
-- ヘッダー右上の「進捗リセット」ボタンで最初からやり直せます
-
-### 推奨する使い方
-
-- **自習スタイル**: 1日2〜3レッスンのペースで進める
-- **授業スタイル**: プロジェクターで左パネルの解説を映しながら、学生に手元で実装させる
-- **デバッグ練習**: あえて間違ったコードを書いてエラーメッセージを読む練習にも活用可能
-
-### 全クリア演出
-
-全19レッスンをクリアすると、トロフィーと修了メッセージが表示される達成演出が発動します。
-
----
-
-## 📝 npm スクリプト
-
-| コマンド | 説明 |
-| :--- | :--- |
-| `npm run dev` | 開発サーバー起動（HMR対応） |
-| `npm run build` | TypeScriptチェック + プロダクションビルド |
-| `npm run preview` | ビルド成果物のプレビューサーバー起動 |
-| `npm run lint` | ESLintによるコード静的解析 |
-
----
-
-## ⚠️ バージョン競合とビルド・デプロイ設定について
-
-本プロジェクトは **React 19** という最新バージョンを採用して構築されていますが、開発環境チェック用ツール（`devDependencies` に属する一部の ESLint 関連プラグイン）が内部的に「React 18以下」を求めている（Peer Dependencies：ピア依存関係）ため、厳格なクリーンインストールコマンド（`npm ci`）を使用すると競合エラーでビルドが止まることがあります。
-
-### あえて根本対応（ライブラリの強制アップデートなど）をしない理由
-
-1. **本番配信コード（学生用）への影響が0であるため**
-   - 互換性の競合が起きているのは、すべて「開発者のみが使う静的チェック用のツール（`devDependencies`）」だけであり、ビルドされた本番用の成果物（`dist` 配下のHTML/JS/CSS）には1ミリも影響しません。学生がブラウザで学習する上では、100%安全かつ安定して動作します。
-2. **システム本体の安定性を最優先するため**
-   - 無理にすべての周辺ツールを React 19 対応に最新化・強制書き換えすると、Babelのインブラウザコンパイルエンジンや Monaco Editor との間で予期せぬ二次的エラーやビルド不良を引き起こすリスクがあります。
-3. **教育システムとしての整合性を維持するため**
-   - 本番のコアである React 19 をそのまま生かしつつ、開発支援ツール側の細かなバージョン不整合を安全に許容する形が、現在最もシステム全体が安定的かつ低リスクに動作するバランスです。
-
-### 🛠️ デプロイ時の回避策
-
-GitHub Actions での CI/CD ビルド時には、以下のオプションを指定してパッケージをインストールしています。
-```bash
-npm install --legacy-peer-deps
-```
-この設定により、開発用ツールの形式的な依存バージョン警告を無視し、安定している現状のライブラリ構成のまま問題なく自動ビルド・デプロイを完了させることができます。
-
----
-
-## ライセンス
-
-MIT
+[MIT License](LICENSE)
